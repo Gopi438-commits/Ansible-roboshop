@@ -9,21 +9,21 @@
     instances:
     - mongodb
 
-    tasks:
-    - name: create ec2 instance
-      amazon.aws.ec2_instance:
+  tasks:
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      instance_type: t2.micro
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id }}"
+      tags:
         name: "{{ item }}"
-        instance_type: t2.micro
-        security_group: "{{ sg_id }}"
-        image_id: "{{ ami_id }}"
-        tags:
-          name: "{{ item }}"
-      loop: "{{ instances }}"  
-      register: "{{ ec2_output }}"
+    loop: "{{ instances }}"  
+    register: "{{ ec2_output }}"
 
-    - name: print the ec2_output
-      ansible.builtin.debug:
-        msg: "{{ ec2_output }}"
+  - name: print the ec2_output
+    ansible.builtin.debug:
+      msg: "{{ ec2_output }}"
 
 
 
