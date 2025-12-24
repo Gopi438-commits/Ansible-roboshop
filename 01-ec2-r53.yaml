@@ -1,11 +1,11 @@
 - name: create ec2 and r53
-  hosts: local
-  connection: local
+  hosts: mongodb
+  
   vars:
     ami_id: ami-09c813fb71547fc4f 
     sg_id:  sg-015b379773dfad353
     zone_id: "Z033018333SJPKLRW6RQS"
-    domain_name: "devops26.fun"
+    domain_name: devops26.fun
     instances:
     - mongodb
 
