@@ -10,6 +10,7 @@
     domain_name: 'devops26.fun'
     instances:
     - mongodb
+    - catalogue
 
   tasks:
   - name: create ec2 instance
