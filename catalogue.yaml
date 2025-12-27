@@ -2,10 +2,10 @@
   hosts: catalogue
   become: yes
   tasks:
-  - name: disable current module
+  - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
 
-  - name: enable required module
+  - name: enable nodejs 20
     ansible.builtin.command: dnf module enable nodejs:20 -y
 
   - name: install nodejs
@@ -13,22 +13,25 @@
       name: nodejs
       state: present
 
-  - name: add application user
+  - name: create roboshop system user
     ansible.builtin.user:
       name: roboshop
-      comment: roboshop system user
+      comment: RoboShop System user
+      system: true
       shell: /sbin/nologin
       home: /app
-      system: true
+  
 
-  - name: create  app directory
+  - name: create app directory
     ansible.builtin.file:
-       path: /app
-       state: directory
+      state: directory
+      path: /app
 
-  - name: Download catalogue application
+
+
+  - name: download catalogue application
     ansible.builtin.get_url:
-      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
       dest: /tmp/catalogue.zip
 
   - name: extract catalogue application
@@ -46,7 +49,7 @@
       src: catalogue.service
       dest: /etc/systemd/system/catalogue.service
 
-  - name: copy mongodb repo
+  - name: copy mongo repo
     ansible.builtin.copy:
       src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
@@ -56,6 +59,10 @@
       name: mongodb-mongosh
       state: present
 
+  - name: connnect to mongodb catalogue
+    ansible.builtin.command: mongosh mongodb.devops26.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+    register: catalogue_output
+
   # - name: evaluate cataalogue database
   #   community.mongodb.mongodb_shell:
   #     login_host: mongodb.daws86s.fun
@@ -64,24 +71,22 @@
 
   # - name: print catalogue output
   #   ansible.builtin.debug:
-  #     msg: "{{ catalogue_output }}"    
-
-  - name: connnect to mongodb catalogue
-    ansible.builtin.command: mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
-    register: catalogue_output 
+  #     msg: "{{ catalogue_output }}"
 
   - name: load products into mongodb
-    ansible.builtin.command: mongosh --host mongodb.devops26.fun </app/db/master-data.js
-    when: catalogue_output.stdout | int < 0 
+    ansible.builtin.shell: mongosh --host mongodb.devops26.fun </app/db/master-data.js
+    when: catalogue_output.stdout | int < 0
+
+  # - name: start and enable cataalogue
+  #   ansible.builtin.service:
+  #     name: catalogue
+  #     enabled: yes
+  #     state: started
 
   - name: daemon reload enable and start
     ansible.builtin.systemd_service:
       name: catalogue
       enabled: true
       state: started
-      daemon_reload: true      
-
-     
-
-
-    
+      daemon_reload: true
+  
