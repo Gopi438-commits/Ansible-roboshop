@@ -72,7 +72,7 @@
 
   - name: load products into mongodb
     ansible.builtin.command: mongosh --host mongodb.devops26.fun </app/db/master-data.js
-    when: catalogue_output.stdout |int<0 
+    when: catalogue_output.stdout | int < 0 
 
   - name: daemon reload enable and start
     ansible.builtin.systemd_service:
