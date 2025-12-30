@@ -9,11 +9,11 @@
       name: 
       state: latest
     loop:
-      - openssl
-      - openssl-libs
-      - openssh
-      - openssh-server
-      - openssh-clients
+    - openssl
+    - openssl-libs
+    - openssh
+    - openssh-server
+    - openssh-clients
     notify: restart sshd
 
   - name: disable default nodejs
