@@ -2,15 +2,18 @@
   hosts: catalogue
   become: yes
   
-  pre_tasks:
+  tasks:
   
-  - name: upgrade openssl libs
+  - name: upgrade openssl packages
     ansible.builtin.dnf:
-      name:
-        - openssl
-        - openssl-libs
+      name: 
       state: latest
-
+    loop:
+    - openssl
+    - openssl-libs
+    - openssh
+    - openssh-server
+    - openssh-clients
 
   - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
