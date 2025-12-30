@@ -2,17 +2,8 @@
   hosts: catalogue
   become: yes
   gather_facts: no
+
   tasks:
-  - name: disable default nodejs
-    ansible.builtin.command: dnf module disable nodejs -y
-
-  - name: enable nodejs 20
-    ansible.builtin.command: dnf module enable nodejs:20 -y
-
-  - name: install nodejs
-    ansible.builtin.package:
-      name: nodejs
-      state: present
 
   - name: upgrade openssl packages
     ansible.builtin.dnf:
@@ -23,7 +14,20 @@
     - openssl-libs
     - openssh
     - openssh-server
-    - openssh-clients    
+    - openssh-clients 
+  - name: disable default nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
+
+
+  - name: enable nodejs 20
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: install nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+     
 
   - name: create roboshop system user
     ansible.builtin.user:
@@ -77,6 +81,8 @@
     ansible.builtin.package:
       name: mongodb-mongosh
       state: present
+
+
       
 
   - name: connnect to mongodb catalogue
