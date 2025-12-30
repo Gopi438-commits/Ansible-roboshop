@@ -1,12 +1,11 @@
 - name: setup catalogue server
   hosts: catalogue
   become: yes
- 
-  pre_tasks:
+  tasks:
   
   - name: upgrade openssl packages
     ansible.builtin.dnf:
-      name: "{{ item }}"
+      name: 
       state: latest
     loop:
     - openssl
