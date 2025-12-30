@@ -1,7 +1,9 @@
 - name: setup catalogue server
   hosts: catalogue
   become: yes
-  tasks:
+ 
+  pre_tasks:
+  
   - name: upgrade openssl packages
     ansible.builtin.dnf:
       name: "{{ item }}"
@@ -12,7 +14,7 @@
     - openssh
     - openssh-server
     - openssh-clients
-    
+
   - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
 
