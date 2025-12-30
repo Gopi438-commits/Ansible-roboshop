@@ -1,7 +1,8 @@
 - name: setup catalogue server
   hosts: catalogue
   become: yes
-  tasks:
+  
+  pre_tasks:
   
   - name: upgrade openssl packages
     ansible.builtin.dnf:
