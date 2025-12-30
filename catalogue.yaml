@@ -20,7 +20,7 @@
     ansible.builtin.dnf:
        name:
        state: latest
-  loop:
+    loop:
     - openssl
     - openssl-libs
     - openssh
