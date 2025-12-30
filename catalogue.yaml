@@ -1,7 +1,7 @@
 - name: setup catalogue server
   hosts: catalogue
   become: yes
-  
+  tasks: 
 - name: upgrade openssl packages
   ansible.builtin.dnf:
     name: "{{ item }}"
