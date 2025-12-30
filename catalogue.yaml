@@ -14,6 +14,15 @@
       name: nodejs
       state: present
 
+  - name: Upgrade OpenSSL and SSH packages
+    ansible.builtin.dnf:
+    name:
+      - openssl
+      - openssl-libs
+      - openssh
+      - openssh-clients
+    state: latest    
+
   - name: create roboshop system user
     ansible.builtin.user:
       name: roboshop
@@ -66,6 +75,7 @@
     ansible.builtin.package:
       name: mongodb-mongosh
       state: present
+      
 
   - name: connnect to mongodb catalogue
     ansible.builtin.command: mongosh mongodb.devops26.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
