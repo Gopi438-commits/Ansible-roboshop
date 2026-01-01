@@ -2,7 +2,7 @@
   hosts: shipping
   become: yes
   tasks:
-  - name: install maven
+  - name: install maven 
     ansible.builtin.dnf:
       name: "{{ item }}"
       state: present
@@ -16,39 +16,39 @@
       name: "{{ item }}"
     loop:
     - cryptography
-    - PyMySQL
+    - PyMySQL  
 
   - name: create roboshop system user
     ansible.builtin.user:
       name: roboshop
-      comment: RoboShop System user
-      system: true
       shell: /sbin/nologin
+      comment: roboshop system user
+      system: true
       home: /app
 
-  - name: remove app directory
+  - name: remove the directory if exist
     ansible.builtin.file:
       path: /app
       state: absent
 
-  - name: create app directory
+  - name: create an directory
     ansible.builtin.file:
-      state: directory
       path: /app
+      state: directory
 
-  - name: Delete shipping file
+  - name: delete payment file
     ansible.builtin.file:
       path: /tmp/shipping.zip
-      state: absent
+      state: absent  
 
-  - name: download shipping application
+  - name: download the  application code
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
       dest: /tmp/shipping.zip
 
   - name: extract shipping application
     ansible.builtin.unarchive:
-      src: /tmp/shipping.zip
+      src: /tmp/shipping.zip 
       dest: /app
       remote_src: yes
 
@@ -71,7 +71,7 @@
     community.mysql.mysql_db:
       state: import
       name: all
-      login_host: mysql.daws86s.fun
+      login_host: mysql.devops26.fun
       login_user: root
       login_password: RoboShop@1
       target: "{{ item }}"
@@ -86,5 +86,11 @@
       enabled: true
       state: started
       daemon_reload: true
+    
 
-  
+
+
+
+
+
+
