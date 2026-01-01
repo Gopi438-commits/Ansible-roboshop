@@ -14,7 +14,6 @@
     - cart
     - payment
     - user
-    - shipping
     - rabbitmq
     - mysql
     - frontend
